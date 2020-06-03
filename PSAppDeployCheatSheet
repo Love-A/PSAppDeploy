@@ -1,3 +1,6 @@
+This amazing cheat sheet is made my Lee Ramsay and has ben MOST helpfull for me!
+Check out his GitHub here: https://gist.github.com/leeramsay
+	
 	## Commonly used PSADT env variables
 	$envCommonDesktop # C:\Users\Public\Desktop
 	$envCommonPrograms # C:\ProgramData\Microsoft\Windows\Start Menu\Programs

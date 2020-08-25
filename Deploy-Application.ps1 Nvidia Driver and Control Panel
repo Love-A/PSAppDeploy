@@ -62,13 +62,13 @@ Try {
 	##*===============================================
 	## Variables: Application
 	[string]$appVendor = 'Nvidia'
-	[string]$appName = 'Drivers and Control Panel'
-	[string]$appVersion = '442.23'
+	[string]$appName = 'Driver & Control Panel'
+	[string]$appVersion = '1.0'
 	[string]$appArch = ''
 	[string]$appLang = 'EN'
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '1.0.0'
-	[string]$appScriptDate = '2020-04-16'
+	[string]$appScriptDate = '2020-07-08'
 	[string]$appScriptAuthor = 'NKPG Love'
 	##*===============================================
 	## Variables: Install Titles (Only set here to override defaults set by the toolkit)
@@ -123,7 +123,7 @@ Try {
 		## Show-InstallationProgress
 
 		## <Perform Pre-Installation tasks here>
-
+		
 
 		##*===============================================
 		##* INSTALLATION
@@ -139,27 +139,29 @@ Try {
 		}
 
 		## <Perform Installation tasks here>
+		
+		$VideoProcessor = Get-CimInstance -ClassName Win32_VideoController | Select-Object -ExpandProperty Name
+			Switch($VideoProcessor){
 
-            # Get Computer System Model for Switch
-            $ComputerSystemModel = Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -ExpandProperty Model
-
-            Switch($ComputerSystemModel){
-                "HP ZBook 15 G5"{
-                Execute-Process -Path "$dirFiles\Zbook15G5.exe" -Parameters '/s'
-                Write-Output "Installing Nvidia drivers & Control Panel for $ComputerSystemModel..."
-                }
-
-                "HP ZBook 15 G6"{
-                Execute-Process -Path "$dirFiles\Zbook15G6.exe" -Parameters '/s'
-                Write-Output "Installing Nvidia drivers & Control Panel for $ComputerSystemModel..."
-                }
-				
-				"HP Z4 G4 Workstation"{
-                Execute-Process -Path "$dirFiles\Zbook15G6.exe" -Parameters '/s'
-                Write-Output "Installing Nvidia drivers & Control Panel for $ComputerSystemModel..."
-                }
-            }
-            }
+				"NVIDIA Quadro T1000"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro T1000.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+				"NVIDIA Quadro P1000"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro P1000.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+				"NVIDIA Quadro M2200"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro M2200.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+				"NVIDIA Quadro M2000M"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro M2000M.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+				"NVIDIA Quadro K3100M"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro K3100M.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+				"NVIDIA Quadro M1000M"{
+					Execute-Process -Path "$dirFiles\NVIDIA Quadro M1000M.exe" -Parameters '-s -noreboot -clean' -WindowStyle 'Hidden'
+				}
+			}
 
 		##*===============================================
 		##* POST-INSTALLATION
@@ -169,7 +171,8 @@ Try {
 
 		## <Perform Post-Installation tasks here>
 
-
+		Set-RegistryKey -Key "$configToolkitRegPath\$appDeployToolkitName\InstallMarkers\$installName"
+		
 		## Display a message at the end of the install
 		## If (-not $useDefaultMsi) { Show-InstallationPrompt -Message 'You can customize text to appear at the end of an install or remove it completely for unattended installations.' -ButtonRightText 'OK' -Icon Information -NoWait }
 	}
@@ -204,8 +207,14 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-
-
+		
+		Execute-Process -Path "RunDll32.EXE" -Parameters '-s "C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\NVI2.DLL",UninstallPackage Display.Driver -silent'
+		Execute-Process -Path "RunDll32.EXE" -Parameters '-s "C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\NVI2.DLL",UninstallPackage Display.GFExperience -silent'
+		Execute-Process -Path "RunDll32.EXE" -Parameters '-s "C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\NVI2.DLL",UninstallPackage Display.NView -silent'
+		Execute-Process -Path "RunDll32.EXE" -Parameters '-s "C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\NVI2.DLL",UninstallPackage Display.NVWMI -silent'
+		Execute-Process -Path "RunDll32.EXE" -Parameters '-s "C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\NVI2.DLL",UninstallPackage HDAudio.Driver -silent'
+	
+		
 		##*===============================================
 		##* POST-UNINSTALLATION
 		##*Remove an install marker reg key for custom detections: Remove-RegistryKey -Key "$configToolkitRegPath\$appDeployToolkitName\InstallMarkers\$installName"
@@ -213,7 +222,8 @@ Try {
 		[string]$installPhase = 'Post-Uninstallation'
 
 		## <Perform Post-Uninstallation tasks here>
-
+		
+		Remove-RegistryKey -Key "$configToolkitRegPath\$appDeployToolkitName\InstallMarkers\$installName"
 
 	}
 

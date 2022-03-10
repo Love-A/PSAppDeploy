@@ -144,7 +144,7 @@ Try {
 
 		## <Perform Installation tasks here>
 		
-		$VDAInstallExit = Execute-Process -Path "$dirFiles\VDAWorkstationSetup_1912.exe" -Parameters '/Component VDA /Controllers CTXCONTROLLER.Domain.com /disableexperiancemetrics /enable_framehawk_port /enable_hdx_ports /enable_hdx_udp_ports /enable_real_time_transport /enable_remote_assistance /exclude "Personal vDisk,Citrix personalization for App-V - VDA" /optimize /quiet /noreboot /noresume' -WindowStyle 'Hidden' -PassThru
+		$VDAInstallExit = Execute-Process -Path "$dirFiles\VDAWorkstationSetup_1912.exe" -Parameters '/Components VDA /Controllers CTXCONTROLLER.Domain.com /disableexperiancemetrics /enable_framehawk_port /enable_hdx_ports /enable_hdx_udp_ports /enable_real_time_transport /enable_remote_assistance /exclude "Personal vDisk,Citrix personalization for App-V - VDA" /optimize /quiet /noreboot /noresume' -WindowStyle 'Hidden' -PassThru
 		Write-Log -Message $VDAInstallExit.ExitCode
 		
 		if($VDAInstallExit.ExitCode -eq '3'){
